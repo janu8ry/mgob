@@ -18,7 +18,7 @@ COPY . /go/src/github.com/stefanprodan/mgob
 
 WORKDIR /go/src/github.com/stefanprodan/mgob
 
-RUN CGO_ENABLED=0 GOOS=linux \
+RUN CGO_ENABLED=0 GOARCH=arm64 GOOS=linux \
     go build \
     -ldflags "-X main.version=$VERSION" \
     -a -installsuffix cgo \
