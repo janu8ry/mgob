@@ -1,4 +1,4 @@
-ARG MONGODB_TOOLS_VERSION=100.5.1
+ARG MONGODB_TOOLS_VERSION=100.5.3
 ARG EN_AWS_CLI=false
 ARG AWS_CLI_VERSION=1.22.46
 ARG EN_AZURE=false
@@ -14,15 +14,15 @@ FROM golang:1.17 as mgob-builder
 
 ARG VERSION
 
-COPY . /go/src/github.com/stefanprodan/mgob
+COPY . /go/src/github.com/janu8ry/mgob
 
-WORKDIR /go/src/github.com/stefanprodan/mgob
+WORKDIR /go/src/github.com/janu8ry/mgob
 
 RUN CGO_ENABLED=0 GOARCH=arm64 GOOS=linux \
     go build \
     -ldflags "-X main.version=$VERSION" \
     -a -installsuffix cgo \
-    -o mgob github.com/stefanprodan/mgob/cmd/mgob
+    -o mgob github.com/janu8ry/mgob/cmd/mgob
 
 FROM golang:1.17-alpine3.15 as tools-builder
 
@@ -68,7 +68,7 @@ WORKDIR /
 COPY build.sh /tmp
 RUN /tmp/build.sh
 
-COPY --from=mgob-builder /go/src/github.com/stefanprodan/mgob/mgob .
+COPY --from=mgob-builder /go/src/github.com/janu8ry/mgob/mgob .
 COPY --from=tools-builder /go/mongo-tools/bin/* /usr/bin/
 
 VOLUME ["/config", "/storage", "/tmp", "/data"]
@@ -76,9 +76,9 @@ VOLUME ["/config", "/storage", "/tmp", "/data"]
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="mgob" \
       org.label-schema.description="MongoDB backup automation tool" \
-      org.label-schema.url="https://github.com/stefanprodan/mgob" \
+      org.label-schema.url="https://github.com/janu8ry/mgob" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/stefanprodan/mgob" \
+      org.label-schema.vcs-url="https://github.com/janu8ry/mgob" \
       org.label-schema.vendor="stefanprodan.com" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
