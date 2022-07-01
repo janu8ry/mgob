@@ -83,4 +83,4 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-ENTRYPOINT [ "./mgob" ]
+ENTRYPOINT [ "./mgob", "-LogLevel=debug" ]
